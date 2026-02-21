@@ -22,7 +22,8 @@
                         <i class="fas fa-chevron-down text-xs text-gray-400 transition-transform"
                             :class="active === 1 ? 'rotate-180' : ''"></i>
                     </button>
-                    <div x-show="active === 1" x-collapse x-cloak class="px-6 pb-6 text-sm text-gray-600 leading-relaxed">
+                    <div x-show="active === 1" x-collapse.duration.400ms x-transition.opacity.duration.300ms x-cloak
+                        class="px-6 pb-6 text-sm text-gray-600 leading-relaxed">
                         Mahasiswa dapat menuju menu <span class="font-bold text-green-600">Pengajuan Judul</span>, mengisi
                         form yang tersedia, dan mengunggah berkas proposal dalam format PDF.
                     </div>
@@ -35,7 +36,8 @@
                         <i class="fas fa-chevron-down text-xs text-gray-400 transition-transform"
                             :class="active === 2 ? 'rotate-180' : ''"></i>
                     </button>
-                    <div x-show="active === 2" x-collapse x-cloak class="px-6 pb-6 text-sm text-gray-600 leading-relaxed">
+                    <div x-show="active === 2" x-collapse.duration.400ms x-transition.opacity.duration.300ms x-cloak
+                        class="px-6 pb-6 text-sm text-gray-600 leading-relaxed">
                         Dosen pembimbing dapat melihat daftar dokumen masuk di halaman <span
                             class="font-bold text-green-600">Penilaian</span>, lalu menekan tombol "Beri Nilai" untuk
                         mengisi grade dan catatan.
@@ -67,7 +69,8 @@
                             ').';
                     @endphp
 
-                    <div x-show="active === 3" x-collapse x-cloak class="px-6 pb-6 text-sm text-gray-600 leading-relaxed">
+                    <div x-show="active === 3" x-collapse.duration.400ms x-transition.opacity.duration.300ms x-cloak
+                        class="px-6 pb-6 text-sm text-gray-600 leading-relaxed">
                         Jika terjadi kendala teknis (bug/error),
                         silakan hubungi admin melalui WhatsApp
 
