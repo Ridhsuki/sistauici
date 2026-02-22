@@ -18,16 +18,44 @@
             </ol>
         </nav>
     </div>
-    <div class="p-6 bg-white rounded-lg shadow-md">
-        <a href="{{ route('admin.management.mahasiswa.create') }}"
-            class="px-4 py-2 bg-green-600 text-white rounded-md mb-4 inline-block hover:bg-green-700 transition-colors">
-            <i class="fas fa-plus mr-2"></i>Tambah Mahasiswa
-        </a>
-        <button x-data @click="$dispatch('open-modal')"
-            class="px-4 py-2 bg-blue-600 text-white rounded-md mb-4 inline-block hover:bg-blue-700 transition-colors">
-            <i class="fas fa-upload mr-2"></i>Import Data
-        </button>
+    <div
+        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <form action="{{ route('admin.management.mahasiswa.index') }}" method="GET" class="w-full md:w-1/2 relative">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="Cari nama atau email mahasiswa..."
+                    class="block w-full pl-10 pr-12 py-2.5 border border-gray-300 rounded-lg leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors duration-200">
 
+                @if (request('search'))
+                    <a href="{{ route('admin.management.mahasiswa.index') }}"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-red-500 transition-colors">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </a>
+                @endif
+            </div>
+        </form>
+
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <a href="{{ route('admin.management.mahasiswa.create') }}"
+                class="px-4 py-2 bg-green-600 text-white rounded-md mb-4 inline-block hover:bg-green-700 transition-colors">
+                <i class="fas fa-plus mr-2"></i>Tambah Mahasiswa
+            </a>
+            <button x-data @click="$dispatch('open-modal')"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md mb-4 inline-block hover:bg-blue-700 transition-colors">
+                <i class="fas fa-upload mr-2"></i>Import Data
+            </button>
+        </div>
+    </div>
+    <div class="p-6 bg-white rounded-lg shadow-md">
         <div x-data="{ open: false }" @open-modal.window="open = true" x-cloak x-show="open"
             x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
@@ -100,7 +128,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($mahasiswa as $m)
+                    @forelse ($mahasiswas as $m)
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-2 md:px-4 py-2 border">
                                 @if ($m->foto)
@@ -115,7 +143,7 @@
                             <td class="px-2 md:px-4 py-2 border break-words max-w-[200px]">{{ $m->email }}</td>
                             <td class="px-2 md:px-4 py-2 border break-words max-w-[100px]">{{ $m->NIM }}</td>
                             <td class="px-2 md:px-4 py-2 border break-words max-w-[150px]">{{ $m->prodi }}</td>
-                            <td class="px-2 md:px-4 py-2 border break-words max-w-[120px]">{{ $m->no_hp ?? '-'}}</td>
+                            <td class="px-2 md:px-4 py-2 border break-words max-w-[120px]">{{ $m->no_hp ?? '-' }}</td>
                             <td class="px-2 md:px-4 py-2 border flex flex-col md:flex-row gap-1 md:gap-2 items-center">
                                 <a href="{{ route('admin.management.mahasiswa.edit', $m->id) }}"
                                     class="px-3 py-1 bg-blue-500 text-white rounded text-center hover:bg-blue-600 transition-colors">Edit</a>
@@ -139,9 +167,9 @@
             </table>
         </div>
 
-        @if ($mahasiswa->hasPages())
+        @if ($mahasiswas->hasPages())
             <div class="mt-4">
-                {{ $mahasiswa->links() }}
+                {{ $mahasiswas->links() }}
             </div>
         @endif
     </div>

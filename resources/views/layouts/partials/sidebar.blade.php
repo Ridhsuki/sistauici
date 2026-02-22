@@ -118,15 +118,20 @@
                     </button>
 
                     <div x-show="open" x-collapse.duration.300ms class="space-y-1">
+                        <a href="{{ route('dosen.jadwalbimbingan.index') }}"
+                            class="flex items-center gap-3 px-8 py-2 rounded-full transition-all duration-300 {{ request()->routeIs('dosen.jadwalbimbingan.index') ? 'bg-green-500 text-white font-semibold' : 'hover:bg-gray-100 text-gray-600' }}">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Jadwal Bimbingan</span>
+                        </a>
                         <a href="{{ route('dosen.bimbingan.index') }}"
                             class="flex items-center gap-3 px-8 py-2 rounded-full transition-all duration-300 {{ request()->routeIs('dosen.bimbingan.index') ? 'bg-green-500 text-white font-semibold' : 'hover:bg-gray-100 text-gray-600' }}">
                             <i class="fas fa-user-graduate"></i>
                             <span>Mahasiswa Bimbingan</span>
                         </a>
-                        <a href="{{ route('dosen.jadwalbimbingan.index') }}"
-                            class="flex items-center gap-3 px-8 py-2 rounded-full transition-all duration-300 {{ request()->routeIs('dosen.jadwalbimbingan.index') ? 'bg-green-500 text-white font-semibold' : 'hover:bg-gray-100 text-gray-600' }}">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Jadwal Bimbingan</span>
+                        <a href="{{ route('dosen.bimbingan.history') }}"
+                            class="flex items-center gap-3 px-8 py-2 rounded-full transition-all duration-300 {{ request()->routeIs('dosen.bimbingan.history') ? 'bg-green-500 text-white font-semibold' : 'hover:bg-gray-100 text-gray-600' }}">
+                            <i class="fas fa-history"></i>
+                            <span>Riwayat Bimbingan</span>
                         </a>
                     </div>
                 </div>
@@ -193,11 +198,32 @@
 
                 {{-- ================= MAHASISWA ================= --}}
             @elseif (auth()->user()->role == 'mahasiswa')
-                <a href="{{ route('mahasiswa.jadwal-seminar') }}"
-                    class="flex items-center gap-3 px-4 py-2 rounded-full {{ request()->routeIs('mahasiswa.jadwal-seminar') ? 'bg-green-600 text-white font-semibold' : 'hover:bg-gray-100 text-gray-600' }}">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>Jadwal Seminar & Sidang</span>
-                </a>
+                <div x-data="{
+                    open: localStorage.getItem('sidebar_dosen_bimbingan') === 'true' ||
+                        (localStorage.getItem('sidebar_dosen_bimbingan') === null && {{ request()->routeIs('dosen.bimbingan.*') || request()->routeIs('dosen.jadwalbimbingan.*') ? 'true' : 'false' }})
+                }" x-init="$watch('open', val => localStorage.setItem('sidebar_dosen_bimbingan', val))" class="space-y-1">
+
+                    <button type="button" @click="open = !open"
+                        class="flex items-center w-full gap-3 px-4 py-2 rounded-full transition-all duration-300 {{ request()->routeIs('dosen.bimbingan.*') || request()->routeIs('dosen.jadwalbimbingan.*') ? 'text-white bg-green-600' : 'hover:bg-gray-100 text-gray-600' }}">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Bimbingan</span>
+                        <i class="fas fa-chevron-down ml-auto transition-transform duration-300"
+                            :class="{ 'rotate-180': open }"></i>
+                    </button>
+
+                    <div x-show="open" x-collapse.duration.300ms class="space-y-1">
+                        <a href="{{ route('mahasiswa.jadwal-seminar') }}"
+                            class="flex items-center gap-3 px-8 py-2 rounded-full transition-all duration-300 {{ request()->routeIs('mahasiswa.jadwal-seminar') ? 'bg-green-500 text-white font-semibold' : 'hover:bg-gray-100 text-gray-600' }}">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Jadwal Seminar & Sidang</span>
+                        </a>
+                        <a href="{{ route('mahasiswa.bimbingan.history') }}"
+                            class="flex items-center gap-3 px-8 py-2 rounded-full transition-all duration-300 {{ request()->routeIs('mahasiswa.bimbingan.history') ? 'bg-green-500 text-white font-semibold' : 'hover:bg-gray-100 text-gray-600' }}">
+                            <i class="fas fa-history"></i>
+                            <span>Riwayat Bimbingan</span>
+                        </a>
+                    </div>
+                </div>
                 <a href="{{ route('mahasiswa.proposals.index') }}"
                     class="flex items-center gap-3 px-4 py-2 rounded-full {{ request()->routeIs('mahasiswa.proposals.*') ? 'bg-green-600 text-white font-semibold' : 'hover:bg-gray-100 text-gray-600' }}">
                     <i class="fas fa-file-alt"></i>

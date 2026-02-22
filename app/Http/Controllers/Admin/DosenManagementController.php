@@ -14,10 +14,18 @@ use Illuminate\Database\UniqueConstraintViolationException;
 
 class DosenManagementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dosen = User::where('role', 'dosen')->latest()->paginate(10);
-        return view('admin.management.dosen.index', compact('dosen'));
+        $search = $request->input('search');
+        $dosen = User::where('role', 'dosen')
+            ->when($search, function ($query, $search) {
+                return $query->searchUser($search);
+            })
+            ->orderBy('name', 'asc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.management.dosen.index', compact('dosen', 'search'));
     }
 
     public function create()

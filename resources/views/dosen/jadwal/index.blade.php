@@ -121,6 +121,31 @@
                             </td>
                         </tr>
                     @empty
+                        <tr>
+                            <td colspan="5" class="px-6 py-16 text-center">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg class="w-12 h-12 text-gray-300 mb-4" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M8 7V3m8 4V3m-9 8h10m-12 9h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z" />
+                                    </svg>
+
+                                    <h3 class="text-lg font-semibold text-gray-700 mb-1">
+                                        Belum Ada Jadwal Bimbingan
+                                    </h3>
+
+                                    <p class="text-sm text-gray-500 mb-4 max-w-md">
+                                        Saat ini belum terdapat jadwal bimbingan yang telah disetujui.
+                                        Silakan cek halaman permintaan untuk melihat pengajuan terbaru.
+                                    </p>
+
+                                    <a href="{{ route('dosen.bimbingan.index') }}"
+                                        class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition shadow-sm">
+                                        Cek Permintaan
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>

@@ -8,13 +8,23 @@
             <h1 class="text-2xl font-bold text-gray-800">Manajemen Bimbingan</h1>
             <p class="text-gray-500 text-sm mt-1">Kelola jadwal, status persetujuan, dan prosedur bimbingan mahasiswa.</p>
         </div>
-        <nav class="text-sm font-medium text-gray-500 bg-gray-100 px-4 py-2 rounded-lg">
-            <ol class="list-reset flex items-center gap-2">
-                <li><a href="{{ route('dashboard') }}" class="hover:text-green-600">Home</a></li>
-                <li><span class="mx-2">/</span></li>
-                <li class="text-green-600">Bimbingan</li>
-            </ol>
-        </nav>
+        <div class="flex items-center gap-3">
+            <a href="{{ route('dosen.bimbingan.history') }}"
+                class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Lihat Riwayat
+            </a>
+            <nav class="text-sm font-medium text-gray-500 bg-gray-100 px-4 py-2 rounded-lg">
+                <ol class="list-reset flex items-center gap-2">
+                    <li><a href="{{ route('dashboard') }}" class="hover:text-green-600">Home</a></li>
+                    <li><span class="mx-2">/</span></li>
+                    <li class="text-green-600">Bimbingan</li>
+                </ol>
+            </nav>
+        </div>
     </div>
 
     @if (session('success'))
@@ -241,7 +251,8 @@
 
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-1">Upload Prosedur
-                                                (Gambar)</label>
+                                                (Gambar)
+                                            </label>
                                             <div
                                                 class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:bg-gray-50 transition">
                                                 <div class="space-y-1 text-center">
@@ -298,7 +309,15 @@
                     </path>
                 </svg>
                 <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada Jadwal</h3>
-                <p class="mt-1 text-sm text-gray-500">Belum ada mahasiswa yang mengajukan bimbingan saat ini.</p>
+                <p class="mt-1 text-sm text-gray-500 max-w-sm mx-auto">Saat ini belum ada mahasiswa yang mengajukan jadwal
+                    bimbingan aktif. Cek halaman riwayat untuk melihat sesi yang sudah berlalu.</p>
+                <a href="{{ route('dosen.bimbingan.history') }}"
+                    class="mt-4 inline-flex items-center text-green-600 hover:text-green-800 font-medium text-sm">
+                    Lihat Riwayat Bimbingan <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
             </div>
         @endforelse
     </div>

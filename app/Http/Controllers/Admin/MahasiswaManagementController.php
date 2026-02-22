@@ -13,10 +13,17 @@ use Illuminate\Database\UniqueConstraintViolationException;
 
 class MahasiswaManagementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $mahasiswa = User::where('role', 'mahasiswa')->latest()->paginate(10);
-        return view('admin.management.mahasiswa.index', compact('mahasiswa'));
+        $search = $request->input('search');
+        $mahasiswas = User::where('role', 'mahasiswa')
+            ->when($search, function ($query, $search) {
+                return $query->searchUser($search);
+            })
+            ->orderBy('name', 'asc')
+            ->paginate(10)
+            ->withQueryString();
+        return view('admin.management.mahasiswa.index', compact('mahasiswas', 'search'));
     }
 
     public function create()

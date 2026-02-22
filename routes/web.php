@@ -48,6 +48,8 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->grou
 Route::prefix('mahasiswa')->middleware(['auth', 'role:mahasiswa'])->name('mahasiswa.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'mahasiswa'])->name('dashboard');
     Route::get('jadwal-seminar', [JadwalSeminarMahasiswaController::class, 'index'])->name('jadwal-seminar');
+    Route::get('/bimbingan/history', [JadwalSeminarMahasiswaController::class, 'historyBimbingan'])->name('bimbingan.history');
+    Route::get('/bimbingan/history/pdf', [JadwalSeminarMahasiswaController::class, 'exportPdfHistory'])->name('bimbingan.history.pdf');
     Route::resource('proposal', ProposalMahasiswaController::class)->names('proposals');
     Route::post('proposal/{id}/status', [ProposalMahasiswaController::class, 'updateStatus'])->name('proposals.updateStatus');
     Route::resource('dokumen-akhir', DokumenAkhirMahasiswaController::class)->names('dokumen-akhir')->only(['index', 'store']);
@@ -62,6 +64,8 @@ Route::prefix('dosen')->middleware(['auth', 'role:dosen'])->name('dosen.')->grou
     Route::post('bimbingan/{id}/update-details', [BimbinganDosenController::class, 'updateDetails'])->name('bimbingan.updateDetails');
     Route::post('bimbingan/{id}/status', [BimbinganDosenController::class, 'updateStatus'])->name('bimbingan.updateStatus');
     Route::post('bimbingan/{id}/catatan', [BimbinganDosenController::class, 'addCatatan'])->name('bimbingan.addCatatan');
+    Route::get('/bimbingan/history', [BimbinganDosenController::class, 'history'])->name('bimbingan.history');
+    Route::get('/bimbingan/history/pdf', [BimbinganDosenController::class, 'exportPdfHistory'])->name('bimbingan.history.pdf');
     Route::resource('proposal', ProposalDosenController::class)->only(['index', 'show'])->names('proposals');
     Route::post('proposal/{id}/status', [ProposalDosenController::class, 'updateStatus'])->name('proposals.updateStatus');
     Route::resource('laporan-progress', LaporanProgressDosenController::class)->only(['index', 'show', 'update']);

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Bimbingan extends Model
 {
@@ -29,5 +30,13 @@ class Bimbingan extends Model
     public function dosen()
     {
         return $this->belongsTo(User::class, 'dosen_id');
+    }
+
+    public function scopeRiwayat($query)
+    {
+        return $query->where(function ($q) {
+            $q->where('tanggal_bimbingan', '<', Carbon::today())
+                ->orWhere('status', 'rejected');
+        });
     }
 }
