@@ -202,4 +202,3 @@ Jika Anda menjalankan perintah `php artisan migrate --seed`, database akan teris
 * Pastikan folder `storage/app/public` ada.
 * Coba jalankan ulang `php artisan storage:link`.
 
----
