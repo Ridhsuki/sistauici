@@ -138,4 +138,16 @@ class User extends Authenticatable
         // Menggunakan 'user_id' sesuai tabel database Anda
         return $this->hasMany(Notification::class, 'user_id')->latest();
     }
+
+    /**
+     * Scope untuk melakukan pencarian user berdasarkan nama atau email
+     */
+    public function scopeSearchUser($query, $term)
+    {
+        $term = "%{$term}%";
+        return $query->where(function ($q) use ($term) {
+            $q->where('name', 'like', $term)
+                ->orWhere('email', 'like', $term);
+        });
+    }
 }

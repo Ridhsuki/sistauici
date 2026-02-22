@@ -8,6 +8,7 @@ use App\Models\Bimbingan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BimbinganDosenController extends Controller
 {
@@ -15,7 +16,13 @@ class BimbinganDosenController extends Controller
     {
         $bimbingans = Bimbingan::with('mahasiswa')
             ->where('dosen_id', auth()->id())
-            ->latest()
+            // before
+            // ->latest()
+
+            // after
+            ->where('status', '!=', 'rejected')
+            ->whereDate('tanggal_bimbingan', '>=', \Carbon\Carbon::today())
+            ->orderBy('tanggal_bimbingan', 'asc')
             ->get();
 
         return view('dosen.bimbingan.index', compact('bimbingans'));
@@ -107,5 +114,39 @@ class BimbinganDosenController extends Controller
         );
 
         return redirect()->back()->with('success', 'Detail bimbingan berhasil diperbarui.');
+    }
+
+    public function history()
+    {
+        $bimbingans = Bimbingan::with('mahasiswa')
+            ->where('dosen_id', auth()->id())
+            ->riwayat()
+            ->orderBy('tanggal_bimbingan', 'desc')
+            ->paginate(10);
+
+        return view('dosen.bimbingan.history', compact('bimbingans'));
+    }
+
+    public function exportPdfHistory()
+    {
+        $bimbingans = Bimbingan::with('mahasiswa')
+            ->where('dosen_id', auth()->id())
+            ->riwayat()
+            ->orderBy('tanggal_bimbingan', 'desc')
+            ->get();
+
+        $data = [
+            'title' => 'Laporan Riwayat Bimbingan Mahasiswa',
+            'user' => auth()->user(),
+            'role' => 'dosen',
+            'bimbingans' => $bimbingans,
+            'total_selesai' => $bimbingans->where('status', 'approved')->count(),
+            'total_ditolak' => $bimbingans->where('status', 'rejected')->count(),
+        ];
+
+        $pdf = Pdf::loadView('pdf.history_bimbingan', $data);
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->download('Riwayat_Bimbingan_Dosen_' . date('Ymd') . '.pdf');
     }
 }
