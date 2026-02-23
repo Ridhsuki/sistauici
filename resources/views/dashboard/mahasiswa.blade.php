@@ -27,10 +27,11 @@
         <div class="lg:col-span-2 space-y-6">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
+                <a href="{{ route('mahasiswa.proposals.index') }}"
+                    class="block bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group hover:shadow-md hover:border-green-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
                     <div class="flex justify-between items-start mb-4">
                         <div
-                            class="p-3 rounded-xl {{ $proposalStatus == 'approved' ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-400' }}">
+                            class="p-3 rounded-xl transition-colors duration-300 {{ $proposalStatus == 'approved' ? 'bg-green-50 text-green-600 group-hover:bg-green-100' : 'bg-gray-50 text-gray-400 group-hover:bg-green-50 group-hover:text-green-500' }}">
                             <i class="fas fa-file-signature text-xl"></i>
                         </div>
                         <span
@@ -39,20 +40,26 @@
                         </span>
                     </div>
                     <div>
-                        <h4 class="font-bold text-gray-800">Tahap 1: Proposal</h4>
+                        <h4 class="font-bold text-gray-800 group-hover:text-green-700 transition-colors">Tahap 1: Proposal
+                        </h4>
                         <p class="text-xs text-gray-500 mt-1">Pengajuan judul dan verifikasi dosen pembimbing.</p>
                     </div>
-                    <div class="mt-4 h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div class="mt-4 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
                         <div
-                            class="h-full {{ $proposalStatus == 'approved' ? 'bg-green-500 w-full' : 'bg-yellow-400 w-1/2' }}">
+                            class="h-full transition-all duration-1000 ease-out {{ $proposalStatus == 'approved' ? 'bg-green-500 w-full' : 'bg-yellow-400 w-1/2' }}">
                         </div>
                     </div>
-                </div>
+                    <div
+                        class="absolute bottom-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
+                        <i class="fas fa-arrow-right text-green-500 text-sm"></i>
+                    </div>
+                </a>
 
-                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
+                <a href="{{ route('mahasiswa.dokumen-akhir.index') }}"
+                    class="block bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group hover:shadow-md hover:border-green-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
                     <div class="flex justify-between items-start mb-4">
                         <div
-                            class="p-3 rounded-xl {{ $dokumenStatus == 'approved' ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-400' }}">
+                            class="p-3 rounded-xl transition-colors duration-300 {{ $dokumenStatus == 'approved' ? 'bg-green-50 text-green-600 group-hover:bg-green-100' : 'bg-gray-50 text-gray-400 group-hover:bg-green-50 group-hover:text-green-500' }}">
                             <i class="fas fa-graduation-cap text-xl"></i>
                         </div>
                         <span
@@ -61,14 +68,20 @@
                         </span>
                     </div>
                     <div>
-                        <h4 class="font-bold text-gray-800">Tahap 2: Skripsi Akhir</h4>
+                        <h4 class="font-bold text-gray-800 group-hover:text-green-700 transition-colors">Tahap 2: Skripsi
+                            Akhir</h4>
                         <p class="text-xs text-gray-500 mt-1">Pelaksanaan sidang akhir dan yudisium.</p>
                     </div>
-                    <div class="mt-4 h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full {{ $dokumenStatus == 'approved' ? 'bg-green-500 w-full' : 'bg-gray-300 w-0' }}">
+                    <div class="mt-4 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                            class="h-full transition-all duration-1000 ease-out {{ $dokumenStatus == 'approved' ? 'bg-green-500 w-full' : 'bg-gray-300 w-0' }}">
                         </div>
                     </div>
-                </div>
+                    <div
+                        class="absolute bottom-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -translate-x-2 group-hover:translate-x-0">
+                        <i class="fas fa-arrow-right text-green-500 text-sm"></i>
+                    </div>
+                </a>
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">

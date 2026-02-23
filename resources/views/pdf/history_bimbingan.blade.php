@@ -34,7 +34,6 @@
 
         .logo {
             width: 80px;
-            /* Sesuaikan ukuran logo */
         }
 
         .brand-section {
@@ -203,7 +202,7 @@
 
     <table class="info-table">
         <tr>
-            <td width="65%">
+            <td width="100%">
                 <table width="100%">
                     <tr>
                         <td class="info-label">Nama {{ $role == 'dosen' ? 'Dosen' : 'Mahasiswa' }}</td>
@@ -219,24 +218,6 @@
                         <td class="info-label">Periode Laporan</td>
                         <td>:</td>
                         <td>{{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</td>
-                    </tr>
-                </table>
-            </td>
-            <td width="35%">
-                <table width="100%">
-                    <tr>
-                        <td width="50%">
-                            <div class="summary-card">
-                                <span>Disetujui</span>
-                                <strong style="color: #1a936f;">{{ $total_selesai }}</strong>
-                            </div>
-                        </td>
-                        <td width="50%">
-                            <div class="summary-card">
-                                <span>Ditolak</span>
-                                <strong style="color: #c94c4c;">{{ $total_ditolak }}</strong>
-                            </div>
-                        </td>
                     </tr>
                 </table>
             </td>
