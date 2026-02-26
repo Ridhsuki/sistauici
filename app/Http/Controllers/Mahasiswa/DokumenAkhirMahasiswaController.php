@@ -25,7 +25,8 @@ class DokumenAkhirMahasiswaController extends Controller
             3 => 'Bab 3 - Metodologi Penelitian',
             4 => 'Bab 4 - Hasil dan Pembahasan',
             5 => 'Bab 5 - Penutup',
-            6 => 'Daftar Pustaka & Lampiran'
+            6 => 'Daftar Pustaka & Lampiran',
+            7 => 'Full Dokumen Akhir (Skripsi Lengkap)'
         ];
 
         $bab1 = $uploads->get(1);
@@ -40,7 +41,7 @@ class DokumenAkhirMahasiswaController extends Controller
     {
         $request->validate([
             'judul' => 'required|string|max:255',
-            'bab' => 'required|integer|min:1|max:6',
+            'bab' => 'required|integer|min:1|max:7',
             'file' => 'required|mimes:pdf,doc,docx|max:10240',
             'dosen_pembimbing_id' => 'required|exists:users,id',
             'deskripsi' => 'nullable|string',
