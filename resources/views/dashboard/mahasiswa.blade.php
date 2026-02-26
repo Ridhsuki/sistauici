@@ -59,11 +59,16 @@
                     class="block bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group hover:shadow-md hover:border-green-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
                     <div class="flex justify-between items-start mb-4">
                         <div
-                            class="p-3 rounded-xl transition-colors duration-300 {{ $dokumenStatus == 'approved' ? 'bg-green-50 text-green-600 group-hover:bg-green-100' : 'bg-gray-50 text-gray-400 group-hover:bg-green-50 group-hover:text-green-500' }}">
+                            class="p-3 rounded-xl transition-colors duration-300 {{ $dokumenStatus == 'approved' ? 'bg-green-50 text-green-600 group-hover:bg-green-100' : ($dokumenStatus == 'in_progress' ? 'bg-blue-50 text-blue-600 group-hover:bg-blue-100' : 'bg-gray-50 text-gray-400 group-hover:bg-green-50 group-hover:text-green-500') }}">
                             <i class="fas fa-graduation-cap text-xl"></i>
                         </div>
                         <span
-                            class="px-3 py-1 text-[10px] font-bold uppercase rounded-lg border {{ $dokumenStatus == 'approved' ? 'bg-green-100 text-green-700 border-green-200' : 'bg-gray-100 text-gray-400 border-gray-200' }}">
+                            class="px-3 py-1 text-[10px] font-bold uppercase rounded-lg border
+                            {{ $dokumenStatus == 'approved'
+                                ? 'bg-green-100 text-green-700 border-green-200'
+                                : ($dokumenStatus == 'in_progress'
+                                    ? 'bg-blue-100 text-blue-700 border-blue-200'
+                                    : 'bg-gray-100 text-gray-400 border-gray-200') }}">
                             {{ str_replace('_', ' ', $dokumenStatus) }}
                         </span>
                     </div>
@@ -74,7 +79,12 @@
                     </div>
                     <div class="mt-4 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
                         <div
-                            class="h-full transition-all duration-1000 ease-out {{ $dokumenStatus == 'approved' ? 'bg-green-500 w-full' : 'bg-gray-300 w-0' }}">
+                            class="h-full transition-all duration-1000 ease-out
+                            {{ $dokumenStatus == 'approved'
+                                ? 'bg-green-500 w-full'
+                                : ($dokumenStatus == 'in_progress'
+                                    ? 'bg-blue-500 w-1/2'
+                                    : 'bg-gray-300 w-0') }}">
                         </div>
                     </div>
                     <div

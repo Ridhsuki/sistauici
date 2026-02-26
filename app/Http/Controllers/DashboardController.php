@@ -110,32 +110,45 @@ class DashboardController extends Controller
 
     public function mahasiswa()
     {
-        $mahasiswaId = Auth::id();
+        $user = Auth::user();
 
-        $proposal = Proposal::where('mahasiswa_id', $mahasiswaId)->first();
-        $proposalStatus = $proposal ? $proposal->status : 'belum_mengajukan';
+        $proposal = Proposal::where('mahasiswa_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $proposalStatus = $proposal ? $proposal->status : 'belum_pengajuan';
 
-        $dokumenAkhir = DokumenAkhir::where('mahasiswa_id', $mahasiswaId)->first();
-        $dokumenStatus = $dokumenAkhir ? $dokumenAkhir->status : 'belum_mengajukan';
+        $dokumenAkhirTerakhir = DokumenAkhir::where('mahasiswa_id', $user->id)
+            ->where('bab', 6)
+            ->orderBy('created_at', 'desc')
+            ->first();
 
-        $bimbinganDone = Bimbingan::where('mahasiswa_id', $mahasiswaId)->where('status', 'approved')->count();
-        $bimbinganPending = Bimbingan::where('mahasiswa_id', $mahasiswaId)->where('status', 'pending')->count();
+        if ($dokumenAkhirTerakhir && $dokumenAkhirTerakhir->status === 'approved') {
+            $dokumenStatus = 'approved';
+        } else {
+            $dokumenAktif = DokumenAkhir::where('mahasiswa_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
 
-        $progress = 0;
-        if ($proposalStatus == 'diterima')
-            $progress += 50;
-        if ($dokumenStatus == 'approved')
-            $progress += 50;
+            if ($dokumenAktif) {
+                $dokumenStatus = 'in_progress';
+            } else {
+                $dokumenStatus = 'belum_pengajuan';
+            }
+        }
 
-        $pengumumans = Pengumuman::latest()->limit(8)->get();
+        $bimbinganDone = Bimbingan::where('mahasiswa_id', $user->id)
+            ->where('status', 'approved')->count();
+        $bimbinganPending = Bimbingan::where('mahasiswa_id', $user->id)
+            ->where('status', 'pending')->count();
+
+        $pengumumans = Pengumuman::orderBy('tanggal', 'desc')->take(4)->get();
 
         return view('dashboard.mahasiswa', compact(
             'proposalStatus',
             'dokumenStatus',
             'bimbinganDone',
             'bimbinganPending',
-            'pengumumans',
-            'progress'
+            'pengumumans'
         ));
     }
 

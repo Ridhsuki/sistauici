@@ -163,42 +163,70 @@
                         <div class="space-y-4">
                             @if ($data)
                                 <div
-                                    class="text-sm bg-white p-3 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
+                                    class="text-sm bg-white p-4 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
                                     <div
-                                        class="absolute left-0 top-0 bottom-0 w-1 {{ $status === 'approved' ? 'bg-green-500' : ($status === 'rejected' ? 'bg-red-500' : 'bg-amber-400') }}">
+                                        class="absolute left-0 top-0 bottom-0 w-1.5 {{ $status === 'approved' ? 'bg-green-500' : ($status === 'rejected' ? 'bg-red-500' : 'bg-amber-400') }}">
                                     </div>
 
-                                    <div class="pl-2">
-                                        <p class="font-bold text-gray-900 truncate pr-2" title="{{ $data->judul }}">
-                                            {{ $data->judul }}</p>
-                                        <p class="text-[11px] font-medium text-gray-500 mt-1">
-                                            Diunggah: {{ $data->created_at->translatedFormat('d M Y, H:i') }} WIB
-                                        </p>
+                                    <div class="pl-3 flex flex-col sm:flex-row justify-between items-start gap-4">
+                                        <div class="flex-1 min-w-0">
+                                            <p class="font-bold text-gray-900 truncate text-base"
+                                                title="{{ $data->judul }}">
+                                                {{ $data->judul }}
+                                            </p>
+                                            <p class="text-[11px] font-medium text-gray-400 mt-1.5 flex items-center">
+                                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                Update: {{ $data->created_at->translatedFormat('d M Y, H:i') }} WIB
+                                            </p>
+                                        </div>
 
-                                        @if ($data->catatan_dosen)
-                                            <div class="mt-3 pt-3 border-t border-gray-100">
+                                        <div
+                                            class="flex-shrink-0 flex items-center gap-2.5 py-2 px-3 bg-blue-50/70 rounded-xl border border-blue-100 w-full sm:w-auto max-w-[200px]">
+                                            <div class="p-1.5 bg-white rounded-lg text-blue-600 shadow-sm flex-shrink-0">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <div class="min-w-0">
                                                 <p
-                                                    class="text-[11px] text-red-600 font-bold flex items-center uppercase tracking-wider mb-1.5">
-                                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
-                                                        </path>
-                                                    </svg>
-                                                    Catatan Dosen:
-                                                </p>
-                                                <p
-                                                    class="text-xs text-gray-700 font-medium italic bg-red-50/50 p-2.5 rounded-lg border border-red-100">
-                                                    "{{ $data->catatan_dosen }}"
+                                                    class="text-[9px] font-black text-blue-400 uppercase leading-none tracking-widest mb-0.5">
+                                                    Pembimbing</p>
+                                                <p class="text-xs font-bold text-blue-800 leading-tight truncate"
+                                                    title="{{ $data->dosen->name ?? 'Belum Ditentukan' }}">
+                                                    {{ $data->dosen->name ?? 'Belum Ditentukan' }}
                                                 </p>
                                             </div>
-                                        @endif
+                                        </div>
                                     </div>
+
+                                    @if ($data->catatan_dosen)
+                                        <div class="ml-3 mt-4 pt-3 border-t border-gray-100">
+                                            <p
+                                                class="text-[11px] text-red-600 font-bold flex items-center uppercase tracking-wider mb-2">
+                                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
+                                                    </path>
+                                                </svg>
+                                                Catatan / Revisi dari Dosen:
+                                            </p>
+                                            <p
+                                                class="text-xs text-gray-700 font-medium italic bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                                "{{ $data->catatan_dosen }}"
+                                            </p>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 {{-- KODE RIWAYAT REVISI MAHASISWA --}}
-                                {{-- REFINEMENT RIWAYAT REVISI UNTUK MAHASISWA --}}
                                 @if (isset($uploadsHistory[$key]) && $uploadsHistory[$key]->count() > 1)
                                     <div x-data="{ showHistory: false }" class="mt-4">
                                         <button @click="showHistory = !showHistory" type="button"
@@ -228,7 +256,8 @@
                                                                 class="text-[10px] font-black text-gray-400 uppercase tracking-wider">
                                                                 Versi {{ $history->created_at->format('d/m/Y H:i') }}</p>
                                                         </div>
-                                                        <a href="{{ asset('storage/' . $history->file) }}" target="_blank"
+                                                        <a href="{{ asset('storage/' . $history->file) }}"
+                                                            target="_blank"
                                                             class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"
                                                             title="Lihat File">
                                                             <i class="fas fa-external-link-alt text-xs"></i>
