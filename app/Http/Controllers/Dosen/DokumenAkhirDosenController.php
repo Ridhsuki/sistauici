@@ -52,7 +52,8 @@ class DokumenAkhirDosenController extends Controller
             3 => 'Bab 3 - Metodologi Penelitian',
             4 => 'Bab 4 - Hasil dan Pembahasan',
             5 => 'Bab 5 - Penutup',
-            6 => 'Daftar Pustaka & Lampiran'
+            6 => 'Daftar Pustaka & Lampiran',
+            7 => 'Full Dokumen Akhir (Skripsi Lengkap)'
         ];
 
         return view('dosen.dokumen_akhir.show', compact('mahasiswa', 'uploads', 'uploadsHistory', 'chapters'));

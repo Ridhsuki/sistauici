@@ -118,7 +118,7 @@
                 @endphp
 
                 <div
-                    class="relative border rounded-2xl p-6 transition-all duration-200 {{ $isLocked ? 'opacity-75 grayscale-[0.5]' : 'hover:shadow-md' }} {{ $statusConfig['bg'] }} {{ $statusConfig['border'] }}">
+                    class="relative border rounded-2xl p-6 transition-all duration-200 {{ $isLocked ? 'opacity-75 grayscale-[0.5]' : 'hover:shadow-md' }} {{ $statusConfig['bg'] }} {{ $statusConfig['border'] }} {{ $key == 7 ? 'lg:col-span-2 bg-gradient-to-br from-white to-blue-50/30 ring-1 ring-blue-100' : '' }}">
 
                     @if ($isLocked)
                         <div class="absolute top-4 right-4">

@@ -118,7 +118,7 @@ class DashboardController extends Controller
         $proposalStatus = $proposal ? $proposal->status : 'belum_pengajuan';
 
         $dokumenAkhirTerakhir = DokumenAkhir::where('mahasiswa_id', $user->id)
-            ->where('bab', 6)
+            ->where('bab', 7)
             ->orderBy('created_at', 'desc')
             ->first();
 
