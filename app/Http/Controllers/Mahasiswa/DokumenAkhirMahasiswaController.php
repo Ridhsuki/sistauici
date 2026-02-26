@@ -6,7 +6,6 @@ use App\Helpers\NotifyHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use App\Models\DokumenAkhir;
 use App\Models\User;
 
@@ -14,7 +13,11 @@ class DokumenAkhirMahasiswaController extends Controller
 {
     public function index()
     {
-        $uploads = DokumenAkhir::own()->get()->keyBy('bab');
+        $allUploads = DokumenAkhir::own()->orderBy('created_at', 'desc')->get();
+
+        $uploadsHistory = $allUploads->groupBy('bab');
+
+        $uploads = $uploadsHistory->map->first();
 
         $chapters = [
             1 => 'Bab 1 - Pendahuluan',
@@ -30,7 +33,7 @@ class DokumenAkhirMahasiswaController extends Controller
 
         $dosens = User::where('role', 'dosen')->orderBy('name')->get();
 
-        return view('mahasiswa.dokumen.index', compact('uploads', 'chapters', 'dosens', 'defaultDosenId'));
+        return view('mahasiswa.dokumen.index', compact('uploads', 'uploadsHistory', 'chapters', 'dosens', 'defaultDosenId'));
     }
 
     public function store(Request $request)
@@ -47,6 +50,7 @@ class DokumenAkhirMahasiswaController extends Controller
             $prevBab = $request->bab - 1;
             $prevDoc = DokumenAkhir::where('mahasiswa_id', Auth::id())
                 ->where('bab', $prevBab)
+                ->orderBy('created_at', 'desc')
                 ->first();
 
             if (!$prevDoc || $prevDoc->status !== 'approved') {
@@ -56,22 +60,28 @@ class DokumenAkhirMahasiswaController extends Controller
             }
         }
 
+        $currentDoc = DokumenAkhir::where('mahasiswa_id', Auth::id())
+            ->where('bab', $request->bab)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($currentDoc && in_array($currentDoc->status, ['pending', 'approved'])) {
+            return redirect()->back()
+                ->with('error', "Dokumen Bab {$request->bab} saat ini sedang diproses atau sudah disetujui. Anda hanya bisa mengunggah ulang jika statusnya Ditolak/Revisi.");
+        }
+
         $path = $request->file('file')->store('dokumen_akhir', 'public');
 
-        $dokumen = DokumenAkhir::updateOrCreate(
-            [
-                'mahasiswa_id' => Auth::id(),
-                'bab' => $request->bab,
-            ],
-            [
-                'dosen_pembimbing_id' => $request->dosen_pembimbing_id,
-                'judul' => $request->judul,
-                'file' => $path,
-                'status' => 'pending',
-                'deskripsi' => $request->deskripsi,
-                'catatan_dosen' => null,
-            ]
-        );
+        $dokumen = DokumenAkhir::create([
+            'mahasiswa_id' => Auth::id(),
+            'bab' => $request->bab,
+            'dosen_pembimbing_id' => $request->dosen_pembimbing_id,
+            'judul' => $request->judul,
+            'file' => $path,
+            'status' => 'pending',
+            'deskripsi' => $request->deskripsi,
+            'catatan_dosen' => null,
+        ]);
 
         $admins = User::where('role', 'admin')->get();
         foreach ($admins as $admin) {

@@ -7,20 +7,21 @@
         <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Progress Tugas Akhir</h1>
-                <p class="text-gray-500 mt-1 text-sm">Upload dokumen Anda secara bertahap mulai dari Bab 1 hingga selesai.</p>
+                <p class="text-gray-500 mt-1 text-sm">Upload dokumen Anda secara bertahap mulai dari Bab 1 hingga selesai.
+                </p>
             </div>
 
             <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
                 <div class="text-sm font-medium text-gray-600">Progress:</div>
                 <div class="flex gap-1">
-                    @foreach($chapters as $k => $v)
+                    @foreach ($chapters as $k => $v)
                         @php
                             $chStatus = $uploads[$k]->status ?? 'none';
-                            $dotColor = match($chStatus) {
+                            $dotColor = match ($chStatus) {
                                 'approved' => 'bg-green-500',
                                 'rejected' => 'bg-red-500',
                                 'pending' => 'bg-amber-400',
-                                default => 'bg-gray-200'
+                                default => 'bg-gray-200',
                             };
                         @endphp
                         <div class="w-8 h-2 rounded-full {{ $dotColor }}" title="{{ $v }}"></div>
@@ -31,14 +32,20 @@
         </div>
 
         @if (session('success'))
-            <div class="mb-6 p-4 rounded-lg bg-green-50 border-l-4 border-green-500 text-green-700 flex items-center shadow-sm">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <div
+                class="mb-6 p-4 rounded-lg bg-green-50 border-l-4 border-green-500 text-green-700 flex items-center shadow-sm">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
                 {{ session('success') }}
             </div>
         @endif
         @if (session('error'))
             <div class="mb-6 p-4 rounded-lg bg-red-50 border-l-4 border-red-500 text-red-700 flex items-center shadow-sm">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
                 {{ session('error') }}
             </div>
         @endif
@@ -90,7 +97,8 @@
                             'badge' => 'Menunggu Review',
                             'badge_class' => 'bg-amber-100 text-amber-700 border border-amber-200',
                         ],
-                        default => [ // Empty
+                        default => [
+                            // Empty
                             'border' => 'border-gray-200',
                             'bg' => 'bg-white',
                             'icon_bg' => 'bg-gray-100',
@@ -109,20 +117,24 @@
                     }
                 @endphp
 
-                <div class="relative border rounded-2xl p-6 transition-all duration-200 {{ $isLocked ? 'opacity-75 grayscale-[0.5]' : 'hover:shadow-md' }} {{ $statusConfig['bg'] }} {{ $statusConfig['border'] }}">
+                <div
+                    class="relative border rounded-2xl p-6 transition-all duration-200 {{ $isLocked ? 'opacity-75 grayscale-[0.5]' : 'hover:shadow-md' }} {{ $statusConfig['bg'] }} {{ $statusConfig['border'] }}">
 
-                    @if($isLocked)
+                    @if ($isLocked)
                         <div class="absolute top-4 right-4">
                             <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                </path>
                             </svg>
                         </div>
                     @endif
 
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 {{ $statusConfig['icon_bg'] }} {{ $statusConfig['icon_text'] }}">
-                                @if($isLocked)
+                            <div
+                                class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 {{ $statusConfig['icon_bg'] }} {{ $statusConfig['icon_text'] }}">
+                                @if ($isLocked)
                                     <span class="font-bold text-lg text-gray-400">{{ $key }}</span>
                                 @else
                                     <span class="font-bold text-lg">{{ $key }}</span>
@@ -130,7 +142,8 @@
                             </div>
                             <div>
                                 <h3 class="text-lg font-bold text-gray-900">{{ $chapterName }}</h3>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold mt-1 {{ $statusConfig['badge_class'] }}">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold mt-1 {{ $statusConfig['badge_class'] }}">
                                     {{ $statusConfig['badge'] }}
                                 </span>
                             </div>
@@ -138,47 +151,195 @@
                     </div>
 
                     @if ($isLocked)
-                        <div class="mt-4 p-3 bg-gray-100 rounded-lg border border-gray-200 text-sm text-gray-500 flex items-center justify-center italic">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div
+                            class="mt-4 p-3 bg-gray-100 rounded-lg border border-gray-200 text-sm text-gray-500 flex items-center justify-center italic">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
                             {{ $lockMessage }}
                         </div>
                     @else
                         <div class="space-y-4">
                             @if ($data)
-                                <div class="text-sm bg-white/60 p-3 rounded-lg border border-gray-100">
-                                    <p class="font-medium text-gray-900 truncate">{{ $data->judul }}</p>
-                                    <p class="text-xs text-gray-500 mt-1">
-                                        Update: {{ $data->updated_at->format('d M Y, H:i') }}
-                                    </p>
-                                    @if ($data->catatan_dosen)
-                                        <div class="mt-2 pt-2 border-t border-gray-100">
-                                            <p class="text-xs text-red-500 font-semibold flex items-center">
-                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
-                                                Catatan Dosen:
-                                            </p>
-                                            <p class="text-xs text-gray-600 italic mt-1 pl-4">{{ $data->catatan_dosen }}</p>
-                                        </div>
-                                    @endif
+                                <div
+                                    class="text-sm bg-white p-3 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
+                                    <div
+                                        class="absolute left-0 top-0 bottom-0 w-1 {{ $status === 'approved' ? 'bg-green-500' : ($status === 'rejected' ? 'bg-red-500' : 'bg-amber-400') }}">
+                                    </div>
+
+                                    <div class="pl-2">
+                                        <p class="font-bold text-gray-900 truncate pr-2" title="{{ $data->judul }}">
+                                            {{ $data->judul }}</p>
+                                        <p class="text-[11px] font-medium text-gray-500 mt-1">
+                                            Diunggah: {{ $data->created_at->translatedFormat('d M Y, H:i') }} WIB
+                                        </p>
+
+                                        @if ($data->catatan_dosen)
+                                            <div class="mt-3 pt-3 border-t border-gray-100">
+                                                <p
+                                                    class="text-[11px] text-red-600 font-bold flex items-center uppercase tracking-wider mb-1.5">
+                                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
+                                                        </path>
+                                                    </svg>
+                                                    Catatan Dosen:
+                                                </p>
+                                                <p
+                                                    class="text-xs text-gray-700 font-medium italic bg-red-50/50 p-2.5 rounded-lg border border-red-100">
+                                                    "{{ $data->catatan_dosen }}"
+                                                </p>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
+
+                                {{-- KODE RIWAYAT REVISI MAHASISWA --}}
+                                {{-- REFINEMENT RIWAYAT REVISI UNTUK MAHASISWA --}}
+                                @if (isset($uploadsHistory[$key]) && $uploadsHistory[$key]->count() > 1)
+                                    <div x-data="{ showHistory: false }" class="mt-4">
+                                        <button @click="showHistory = !showHistory" type="button"
+                                            class="flex items-center justify-between w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-100 hover:text-blue-600 transition-all focus:outline-none">
+                                            <span class="flex items-center">
+                                                <i class="fas fa-folder-open mr-2 opacity-50"></i>
+                                                Berkas Revisi Sebelumnya ({{ $uploadsHistory[$key]->count() - 1 }})
+                                            </span>
+                                            <svg :class="{ 'rotate-180': showHistory }"
+                                                class="w-4 h-4 transition-transform duration-300" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+
+                                        <div x-show="showHistory" x-cloak
+                                            x-transition:enter="transition ease-out duration-200"
+                                            x-transition:enter-start="opacity-0 -translate-y-2" class="mt-3 space-y-3">
+                                            @foreach ($uploadsHistory[$key]->skip(1) as $history)
+                                                <div
+                                                    class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+                                                    <div
+                                                        class="px-4 py-3 bg-gray-50/50 border-b border-gray-100 flex justify-between items-center">
+                                                        <div>
+                                                            <p
+                                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider">
+                                                                Versi {{ $history->created_at->format('d/m/Y H:i') }}</p>
+                                                        </div>
+                                                        <a href="{{ asset('storage/' . $history->file) }}" target="_blank"
+                                                            class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                                                            title="Lihat File">
+                                                            <i class="fas fa-external-link-alt text-xs"></i>
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="p-4">
+                                                        <div class="flex items-center gap-2 mb-3">
+                                                            <span
+                                                                class="px-2 py-0.5 rounded text-[9px] font-bold uppercase {{ $history->status == 'rejected' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600' }}">
+                                                                {{ $history->status == 'rejected' ? 'Revisi' : 'Disetujui' }}
+                                                            </span>
+                                                            @if ($history->status !== 'pending')
+                                                                <span
+                                                                    class="text-[9px] text-gray-400 font-bold uppercase">Ditinjau
+                                                                    pada {{ $history->updated_at->format('d M Y') }}</span>
+                                                            @endif
+                                                        </div>
+
+                                                        @if ($history->catatan_dosen)
+                                                            <div
+                                                                class="relative bg-red-50/30 border border-red-100 p-3 rounded-xl">
+                                                                <div
+                                                                    class="absolute -top-2 left-3 bg-white px-2 text-[9px] font-black text-red-500 uppercase tracking-widest border border-red-100 rounded">
+                                                                    Masukan Dosen</div>
+                                                                <p
+                                                                    class="text-xs text-gray-600 italic leading-relaxed pt-1">
+                                                                    "{{ $history->catatan_dosen }}"</p>
+                                                            </div>
+                                                        @else
+                                                            <p class="text-xs text-gray-400 italic px-1">Tidak ada catatan
+                                                                pada revisi ini.</p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
                             @else
-                                <p class="text-sm text-gray-400 italic pl-1">Belum ada dokumen diunggah.</p>
+                                <div
+                                    class="flex flex-col items-center justify-center py-5 bg-gray-50/50 rounded-xl border border-dashed border-gray-300">
+                                    <svg class="w-8 h-8 text-gray-300 mb-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                        </path>
+                                    </svg>
+                                    <p class="text-sm font-semibold text-gray-500">Belum ada dokumen</p>
+                                </div>
                             @endif
 
-                            <div class="flex gap-2 pt-2">
+                            <div class="flex gap-2 pt-3 border-t border-gray-100 mt-4">
                                 @if ($data)
                                     <a href="{{ asset('storage/' . $data->file) }}" target="_blank"
-                                        class="flex-1 inline-flex justify-center items-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                        Lihat
+                                        class="flex-1 inline-flex justify-center items-center px-4 py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-700 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 shadow-sm transition-all">
+                                        <svg class="w-4 h-4 mr-1.5 text-blue-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                            </path>
+                                        </svg>
+                                        File Terbaru
                                     </a>
                                 @endif
 
-                                @if ($status !== 'approved')
+                                @if (!$data)
                                     <button
-                                        onclick="openUploadModal({{ $key }}, '{{ $chapterName }}', '{{ $data ? $data->judul : '' }}', '{{ $data ? $data->deskripsi : '' }}', '{{ $data ? $data->dosen_pembimbing_id : '' }}')"
-                                        class="flex-1 inline-flex justify-center items-center px-4 py-2 {{ $data ? 'bg-amber-600 hover:bg-amber-700' : 'bg-blue-600 hover:bg-blue-700' }} border border-transparent rounded-lg text-sm font-medium text-white shadow-sm transition-colors">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                                        {{ $data ? 'Revisi' : 'Upload' }}
+                                        onclick="openUploadModal({{ $key }}, '{{ $chapterName }}', '', '', '')"
+                                        class="flex-1 inline-flex justify-center items-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 border border-transparent rounded-xl text-xs font-bold text-white shadow-sm transition-all hover:-translate-y-0.5">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                        </svg>
+                                        Upload Dokumen
+                                    </button>
+                                @elseif ($status === 'rejected')
+                                    <button
+                                        onclick="openUploadModal({{ $key }}, '{{ $chapterName }}', '{{ addslashes($data->judul) }}', '{{ addslashes($data->deskripsi) }}', '{{ $data->dosen_pembimbing_id }}')"
+                                        class="flex-1 inline-flex justify-center items-center px-4 py-2.5 bg-red-600 hover:bg-red-700 border border-transparent rounded-xl text-xs font-bold text-white shadow-sm transition-all hover:-translate-y-0.5"
+                                        title="Silakan upload perbaikan dokumen Anda">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                        </svg>
+                                        Upload Revisi
+                                    </button>
+                                @elseif ($status === 'pending')
+                                    <button disabled
+                                        class="flex-1 inline-flex justify-center items-center px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-xs font-bold text-gray-400 cursor-not-allowed"
+                                        title="Menunggu dosen menyelesaikan review.">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        Tahap Review
+                                    </button>
+                                @elseif ($status === 'approved')
+                                    <button disabled
+                                        class="flex-1 inline-flex justify-center items-center px-4 py-2.5 bg-green-50 border border-green-200 rounded-xl text-xs font-bold text-green-600 cursor-not-allowed">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        Telah Disetujui
                                     </button>
                                 @endif
                             </div>
@@ -189,22 +350,29 @@
         </div>
     </div>
 
-    <div id="uploadModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div id="uploadModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" onclick="closeUploadModal()"></div>
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm"
+                onclick="closeUploadModal()"></div>
 
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div
+                class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-gray-50 px-4 py-4 sm:px-6 border-b border-gray-100 flex justify-between items-center">
                     <h3 class="text-lg leading-6 font-bold text-gray-900" id="modalTitle">Upload Dokumen</h3>
                     <button onclick="closeUploadModal()" class="text-gray-400 hover:text-gray-500 focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                     </button>
                 </div>
 
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6">
-                    <form id="uploadForm" action="{{ route('mahasiswa.dokumen-akhir.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="uploadForm" action="{{ route('mahasiswa.dokumen-akhir.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="bab" id="inputBab">
 
@@ -230,25 +398,33 @@
 
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">File (PDF/DOCX)</label>
-                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:bg-gray-50 transition-colors">
+                                <div
+                                    class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:bg-gray-50 transition-colors">
                                     <div class="space-y-1 text-center">
-                                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
+                                            viewBox="0 0 48 48" aria-hidden="true">
+                                            <path
+                                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                         <div class="flex text-sm text-gray-600 justify-center">
-                                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none">
+                                            <label for="file-upload"
+                                                class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none">
                                                 <span>Upload a file</span>
-                                                <input id="file-upload" name="file" type="file" class="sr-only" required>
+                                                <input id="file-upload" name="file" type="file" class="sr-only"
+                                                    required>
                                             </label>
                                         </div>
                                         <p class="text-xs text-gray-500">PDF, DOC, DOCX up to 10MB</p>
-                                        <p id="fileNameDisplay" class="text-xs font-semibold text-gray-800 mt-2 hidden"></p>
+                                        <p id="fileNameDisplay" class="text-xs font-semibold text-gray-800 mt-2 hidden">
+                                        </p>
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan Tambahan (Opsional)</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan Tambahan
+                                    (Opsional)</label>
                                 <textarea name="deskripsi" id="inputDeskripsi" rows="3"
                                     class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-sm text-sm"
                                     placeholder="Pesan untuk dosen..."></textarea>

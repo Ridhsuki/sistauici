@@ -153,6 +153,64 @@
                                         <p class="text-gray-700">{{ $dokumen->catatan_dosen }}</p>
                                     </div>
                                 @endif
+
+                                @if (isset($uploadsHistory[$key]) && $uploadsHistory[$key]->count() > 1)
+                                    <div x-data="{ showHistory: false }" class="mt-4 pt-4 border-t border-gray-100">
+                                        <button @click="showHistory = !showHistory" type="button"
+                                            class="flex items-center text-xs font-bold text-gray-400 hover:text-green-600 transition-colors uppercase tracking-wider focus:outline-none">
+                                            <svg :class="{ 'rotate-180': showHistory }"
+                                                class="w-3.5 h-3.5 mr-1.5 transition-transform duration-200" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                            <span
+                                                x-text="showHistory ? 'Tutup Riwayat Revisi' : 'Lihat File Revisi Sebelumnya ({{ $uploadsHistory[$key]->count() - 1 }})'"></span>
+                                        </button>
+
+                                        <div x-show="showHistory" x-transition:enter="transition ease-out duration-300"
+                                            x-transition:enter-start="opacity-0 -translate-y-2"
+                                            x-transition:enter-end="opacity-100 translate-y-0" style="display: none;"
+                                            class="mt-4 pl-2">
+                                            <div class="border-l-2 border-gray-200 ml-3 space-y-4 pb-2">
+                                                @foreach ($uploadsHistory[$key]->skip(1) as $history)
+                                                    <div class="relative pl-6">
+                                                        <span
+                                                            class="absolute -left-[9px] top-1.5 h-4 w-4 rounded-full border-2 border-white {{ $history->status == 'rejected' ? 'bg-red-400' : 'bg-gray-400' }}"></span>
+                                                        <div class="bg-gray-50/70 border border-gray-100 p-3 rounded-xl">
+                                                            <div
+                                                                class="flex flex-wrap justify-between items-start mb-2 gap-2">
+                                                                <div>
+                                                                    <span
+                                                                        class="text-[10px] font-bold text-gray-400 uppercase block mb-0.5">Versi
+                                                                        {{ $history->created_at->translatedFormat('d M Y, H:i') }}</span>
+                                                                    <span
+                                                                        class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase {{ $history->status == 'rejected' ? 'bg-red-100 text-red-700' : 'bg-gray-200 text-gray-600' }}">
+                                                                        {{ $history->status == 'rejected' ? 'Ditolak/Revisi' : ucfirst($history->status) }}
+                                                                    </span>
+                                                                </div>
+                                                                <a href="{{ asset('storage/' . $history->file) }}"
+                                                                    target="_blank"
+                                                                    class="inline-flex items-center px-2 py-1 bg-white border border-gray-200 text-gray-600 rounded shadow-sm hover:bg-gray-100 text-xs font-bold transition">
+                                                                    <i class="fas fa-file-download mr-1.5"></i> File Lama
+                                                                </a>
+                                                            </div>
+                                                            @if ($history->catatan_dosen)
+                                                                <div
+                                                                    class="mt-2 text-xs bg-red-50 text-red-700 p-2 rounded-lg border border-red-100">
+                                                                    <span
+                                                                        class="font-bold text-[10px] uppercase block mb-0.5">Catatan
+                                                                        Penolakan:</span>
+                                                                    {{ $history->catatan_dosen }}
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             @else
                                 <p class="text-sm text-gray-400 italic">Menunggu mahasiswa mengunggah dokumen...</p>
                             @endif
@@ -161,15 +219,32 @@
                         @if ($dokumen)
                             <div class="flex flex-row lg:flex-col gap-2 mt-2 lg:mt-0">
                                 <a href="{{ asset('storage/' . $dokumen->file) }}" target="_blank"
-                                    class="flex-1 lg:w-40 flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-bold text-xs uppercase hover:bg-gray-200 transition">
-                                    <i class="fas fa-external-link-alt mr-2"></i> File
+                                    class="flex-1 lg:w-40 flex items-center justify-center px-4 py-2.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl font-bold text-xs uppercase hover:bg-blue-100 transition shadow-sm"
+                                    title="Lihat file versi terakhir">
+                                    <i class="fas fa-file-alt mr-2"></i> File Terbaru
                                 </a>
 
-                                <button
-                                    @click="openReview({{ $dokumen->id }}, '{{ $chapterName }}', '{{ $dokumen->status }}', '{{ addslashes($dokumen->catatan_dosen ?? '') }}')"
-                                    class="flex-1 lg:w-40 flex items-center justify-center px-4 py-2.5 bg-green-600 text-white rounded-xl font-bold text-xs uppercase hover:bg-green-700 shadow-md shadow-green-100 transition">
-                                    <i class="fas fa-check-circle mr-2"></i> Review
-                                </button>
+                                @if ($dokumen->status === 'approved')
+                                    <button disabled
+                                        class="flex-1 lg:w-40 flex items-center justify-center px-4 py-2.5 bg-gray-50 text-gray-400 border border-gray-200 rounded-xl font-bold text-xs uppercase cursor-not-allowed"
+                                        title="Dokumen ini telah disetujui">
+                                        <i class="fas fa-check-double mr-2"></i> Disetujui
+                                    </button>
+                                @elseif ($dokumen->status === 'rejected')
+                                    <button
+                                        @click="openReview({{ $dokumen->id }}, '{{ $chapterName }}', '{{ $dokumen->status }}', '{{ addslashes($dokumen->catatan_dosen ?? '') }}')"
+                                        class="flex-1 lg:w-40 flex items-center justify-center px-4 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl font-bold text-xs uppercase hover:bg-amber-100 transition shadow-sm"
+                                        title="Edit catatan revisi">
+                                        <i class="fas fa-edit mr-2"></i> Edit Review
+                                    </button>
+                                @else
+                                    <button
+                                        @click="openReview({{ $dokumen->id }}, '{{ $chapterName }}', '{{ $dokumen->status }}', '{{ addslashes($dokumen->catatan_dosen ?? '') }}')"
+                                        class="flex-1 lg:w-40 flex items-center justify-center px-4 py-2.5 bg-green-600 text-white rounded-xl font-bold text-xs uppercase hover:bg-green-700 shadow-md shadow-green-100 transition"
+                                        title="Berikan keputusan review">
+                                        <i class="fas fa-clipboard-check mr-2"></i> Review
+                                    </button>
+                                @endif
                             </div>
                         @endif
                     </div>
@@ -200,7 +275,8 @@
 
                     <div class="p-6 space-y-5">
                         <div>
-                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-3">Keputusan Review</label>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-3">Keputusan
+                                Review</label>
                             <div class="grid grid-cols-2 gap-3">
                                 <label class="relative cursor-pointer">
                                     <input type="radio" name="status" value="approved" x-model="status"

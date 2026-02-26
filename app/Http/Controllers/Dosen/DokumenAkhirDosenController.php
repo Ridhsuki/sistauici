@@ -37,10 +37,14 @@ class DokumenAkhirDosenController extends Controller
         $dosenId = Auth::id();
         $mahasiswa = User::findOrFail($mahasiswaId);
 
-        $uploads = DokumenAkhir::where('mahasiswa_id', $mahasiswaId)
+        $allUploads = DokumenAkhir::where('mahasiswa_id', $mahasiswaId)
             ->where('dosen_pembimbing_id', $dosenId)
-            ->get()
-            ->keyBy('bab');
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $uploadsHistory = $allUploads->groupBy('bab');
+
+        $uploads = $uploadsHistory->map->first();
 
         $chapters = [
             1 => 'Bab 1 - Pendahuluan',
@@ -51,7 +55,7 @@ class DokumenAkhirDosenController extends Controller
             6 => 'Daftar Pustaka & Lampiran'
         ];
 
-        return view('dosen.dokumen_akhir.show', compact('mahasiswa', 'uploads', 'chapters'));
+        return view('dosen.dokumen_akhir.show', compact('mahasiswa', 'uploads', 'uploadsHistory', 'chapters'));
     }
 
     /**
